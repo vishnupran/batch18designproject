@@ -1,0 +1,216 @@
+<html>
+<link type="text/css" rel="stylesheet" id="dark-mode-custom-link">
+<link type="text/css" rel="stylesheet" id="dark-mode-general-link">
+<style type="text/css" id="dark-mode-custom-style" lang="en"></style>
+<style type="text/css" id="dark-mode-native-style" lang="en"></style>
+<head><title>Keyed Vigenere Cipher</title>
+<link rel="SHORTCUT ICON" href="/favicon.ico">
+
+<script language="JavaScript" src="util.js"></script>
+<script language="JavaScript" src="vigenere.js"></script>
+<script language="JavaScript" src="keymaker.js"></script>
+<script language="JavaScript"><!--
+
+
+
+function start_update()
+{
+   if (! document.getElementById)
+   {
+      alert('Sorry, you need a newer browser.');
+      return;
+   }
+
+   if ((! document.Vigenere_Loaded) || (! document.Util_Loaded) ||
+       (! document.Keymaker_Loaded) ||
+       (! document.getElementById('output')))
+   {
+      window.setTimeout('start_update()', 100);
+      return;
+   }
+   Keymaker_Start();
+   upd();
+}
+
+
+function upd()
+{
+   var e, keyunchanged;
+   
+   keyunchanged = IsUnchanged(document.encoder.key)
+   
+   if (keyunchanged * IsUnchanged(document.encoder.text) *
+       IsUnchanged(document.encoder.encdec) *
+       IsUnchanged(document.encoder.pass))
+   {
+      window.setTimeout('upd()', 200);
+      return;
+   }
+	
+   ResizeTextArea(document.encoder.text);
+   
+   if (! keyunchanged)
+   {
+      e = document.getElementById('alphabet');
+      e.innerHTML = MakeKeyedAlphabet(document.encoder.key.value);
+      e = document.getElementById('tableau');
+      e.innerHTML = BuildTableau(document.encoder.key.value);
+   }
+
+   e = document.getElementById('output');
+   
+   if (document.encoder.text.value == '')
+   {
+      e.innerHTML = 'Type in a message and see the results here!';
+   }
+   else
+   {
+      e.innerHTML = SwapSpaces(HTMLEscape(Vigenere(document.encoder.encdec.value * 1, 
+         document.encoder.text.value, document.encoder.pass.value, 
+	 document.encoder.key.value)));
+   }
+   window.setTimeout('upd()', 200);
+}
+	
+function fill_k1()
+{
+   document.encoder.encdec.value = -1;
+   document.encoder.key.value = "KRYPTOS";
+   document.encoder.pass.value = "PALIMPSEST";
+   document.encoder.text.value = "EMUFPHZLRFAXYUSDJKZLDKRNSHGNFIVJ\n" +
+      "YQTQUXQBQVYUVLLTREVJYQTMKYRDMFD";
+}
+
+function fill_k2()
+{
+   document.encoder.encdec.value = -1;
+   document.encoder.key.value = "KRYPTOS";
+   document.encoder.pass.value = "ABSCISSA";
+   document.encoder.text.value = "VFPJUDEEHZWETZYVGWHKKQETGFQJNCE\n" +
+      "GGWHKK?DQMCPFQZDQMMIAGPFXHQRLG\n" +
+      "TIMVMZJANQLVKQEDAGDVFRPJUNGEUNA\n" +
+      "QZGZLECGYUXUEENJTBJLBQCRTBJDFHRR\n" +
+      "YIZETKZEMVDUFKSJHKFWHKUWQLSZFTI\n" +
+      "HHDDDUVH?DWKBFUFPWNTDFIYCUQZERE\n" +
+      "EVLDKFEZMOQQJLTTUGSYQPFEUNLAVIDX\n" +
+      "FLGGTEZ?FKZBSFDQVGOGIPUFXHHDRKF\n" +
+      "FHQNTGPUAECNUVPDJMQCLQUMUNEDFQ\n" +
+      "ELZZVRRGKFFVOEEXBDMVPNFQXEZLGRE\n" +
+      "DNQFMPNZGLFLPMRJQYALMGNUVPDXVKP\n" +
+      "DQUMEBEDMHDAFMJGZNUPLGEWJLLAETG"
+}
+
+function fill_k2b()
+{
+   document.encoder.encdec.value = -1;
+   document.encoder.key.value = "KRYPTOS";
+   document.encoder.pass.value = "ABSCISSA";
+   document.encoder.text.value = "VFPJUDEEHZWETZYVGWHKKQETGFQJNCE\n" +
+      "GGWHKK?DQMCPFQZDQMMIAGPFXHQRLG\n" +
+      "TIMVMZJANQLVKQEDAGDVFRPJUNGEUNA\n" +
+      "QZGZLECGYUXUEENJTBJLBQCRTBJDFHRR\n" +
+      "YIZETKZEMVDUFKSJHKFWHKUWQLSZFTI\n" +
+      "HHDDDUVH?DWKBFUFPWNTDFIYCUQZERE\n" +
+      "EVLDKFEZMOQQJLTTUGSYQPFEUNLAVIDX\n" +
+      "FLGGTEZ?FKZBSFDQVGOGIPUFXHHDRKF\n" +
+      "FHQNTGPUAECNUVPDJMQCLQUMUNEDFQ\n" +
+      "ELZZVRRGKFFVOEEXBDMVPNFQXEZLGRE\n" +
+      "DNQFMPNZGLFLPMRJQYALMGNUVPDXVKP\n" +
+      "DQUMEBEDMHDAFMJGZNUPLGEsWJLLAETG"
+}
+
+
+toggle = 0;
+function ToggleTableau()
+{
+   var Link, Vis;
+   
+   if (toggle == 0)
+   {
+      toggle = 1;
+      Link = "Hide Tableau";
+      Vis = "block";
+   }
+   else
+   {
+      toggle = 0;
+      Link = "Show Tableau";
+      Vis = "none";
+   }
+   
+   e = document.getElementById('tableau_link');
+   e.innerHTML = Link;
+   
+   e = document.getElementById('tableau');
+   e.style.display = Vis;
+}
+
+window.setTimeout('start_update()', 100);
+
+// --></script>
+<link rel="stylesheet" type="text/css" href="base.css">
+<link rel="stylesheet" type="text/css" media="screen,projection" href="normal.css">
+<link rel="stylesheet" type="text/css" media="print" href="print.css">
+<script src="/inc/js/site.js?1" type="text/javascript"></script>
+<style type="text/css">
+  
+  #content img {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+</style>
+</head>
+<body>
+   <div id="content">
+    <img src="logo.jpg" width="400px" height="100px">
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<table width="100%" height="100%" cellspacing="0" cellpadding="0" border="0">
+<tbody><tr><td valign="top">
+
+
+<table width="100%" cellspacing="0" cellpadding="0" border="0"><tbody><tr><td width="99%" valign="top"><div class="r_main">
+
+<p>Based on the simpler <a href="vigenere.html">Vigenere</a> cipher, this
+uses an alternate tableau.  The "Alphabet Key" helps decide the alphabet 
+to use to encrypt and decrypt the message.  The "Passphrase" is the code word
+used to select columns in the tableau.  Instead of just using the alphabet from
+A to Z in order, the alphabet key puts a series of letters first, making the
+cipher even tougher to break.  This style of encryption is also called a
+Quagmire III.</p>
+
+
+	
+<form name="encoder" method="post" action="#" onsubmit="return false;">
+<p><select name="encdec" _oldvalue="1">
+   <option value="1">Encrypt
+   </option><option value="-1">Decrypt
+</option></select>
+</p><p>Alphabet Key:  <input type="text" name="key" value="" size="30" _oldvalue=""> -
+<span id="Keymaker0" target="document.encoder.key.value" _showkeymaker="show"><a href="#" onclick="return KeymakerToggle(0)">Show Keymaker</a></span></p>
+<p>Alphabet Used:  <b><tt><span id="alphabet">ABCDEFGHIJKLMNOPQRSTUVWXYZ</span></tt></b> - 
+<a id="tableau_link" href="#" onclick="ToggleTableau(); return false">Show 
+Tableau</a></p>
+<div id="tableau" style="display: none"><tt><b><u>&nbsp;&nbsp;|&nbsp;ABCD&nbsp;EFGH&nbsp;IJKL&nbsp;MNOP&nbsp;QRST&nbsp;UVWX&nbsp;YZ</u></b><br><b>A</b>&nbsp;|&nbsp;ABCD&nbsp;EFGH&nbsp;IJKL&nbsp;MNOP&nbsp;QRST&nbsp;UVWX&nbsp;YZ<br><b>B</b>&nbsp;|&nbsp;BCDE&nbsp;FGHI&nbsp;JKLM&nbsp;NOPQ&nbsp;RSTU&nbsp;VWXY&nbsp;ZA<br><b>C</b>&nbsp;|&nbsp;CDEF&nbsp;GHIJ&nbsp;KLMN&nbsp;OPQR&nbsp;STUV&nbsp;WXYZ&nbsp;AB<br><b>D</b>&nbsp;|&nbsp;DEFG&nbsp;HIJK&nbsp;LMNO&nbsp;PQRS&nbsp;TUVW&nbsp;XYZA&nbsp;BC<br><b>E</b>&nbsp;|&nbsp;EFGH&nbsp;IJKL&nbsp;MNOP&nbsp;QRST&nbsp;UVWX&nbsp;YZAB&nbsp;CD<br><b>F</b>&nbsp;|&nbsp;FGHI&nbsp;JKLM&nbsp;NOPQ&nbsp;RSTU&nbsp;VWXY&nbsp;ZABC&nbsp;DE<br><b>G</b>&nbsp;|&nbsp;GHIJ&nbsp;KLMN&nbsp;OPQR&nbsp;STUV&nbsp;WXYZ&nbsp;ABCD&nbsp;EF<br><b>H</b>&nbsp;|&nbsp;HIJK&nbsp;LMNO&nbsp;PQRS&nbsp;TUVW&nbsp;XYZA&nbsp;BCDE&nbsp;FG<br><b>I</b>&nbsp;|&nbsp;IJKL&nbsp;MNOP&nbsp;QRST&nbsp;UVWX&nbsp;YZAB&nbsp;CDEF&nbsp;GH<br><b>J</b>&nbsp;|&nbsp;JKLM&nbsp;NOPQ&nbsp;RSTU&nbsp;VWXY&nbsp;ZABC&nbsp;DEFG&nbsp;HI<br><b>K</b>&nbsp;|&nbsp;KLMN&nbsp;OPQR&nbsp;STUV&nbsp;WXYZ&nbsp;ABCD&nbsp;EFGH&nbsp;IJ<br><b>L</b>&nbsp;|&nbsp;LMNO&nbsp;PQRS&nbsp;TUVW&nbsp;XYZA&nbsp;BCDE&nbsp;FGHI&nbsp;JK<br><b>M</b>&nbsp;|&nbsp;MNOP&nbsp;QRST&nbsp;UVWX&nbsp;YZAB&nbsp;CDEF&nbsp;GHIJ&nbsp;KL<br><b>N</b>&nbsp;|&nbsp;NOPQ&nbsp;RSTU&nbsp;VWXY&nbsp;ZABC&nbsp;DEFG&nbsp;HIJK&nbsp;LM<br><b>O</b>&nbsp;|&nbsp;OPQR&nbsp;STUV&nbsp;WXYZ&nbsp;ABCD&nbsp;EFGH&nbsp;IJKL&nbsp;MN<br><b>P</b>&nbsp;|&nbsp;PQRS&nbsp;TUVW&nbsp;XYZA&nbsp;BCDE&nbsp;FGHI&nbsp;JKLM&nbsp;NO<br><b>Q</b>&nbsp;|&nbsp;QRST&nbsp;UVWX&nbsp;YZAB&nbsp;CDEF&nbsp;GHIJ&nbsp;KLMN&nbsp;OP<br><b>R</b>&nbsp;|&nbsp;RSTU&nbsp;VWXY&nbsp;ZABC&nbsp;DEFG&nbsp;HIJK&nbsp;LMNO&nbsp;PQ<br><b>S</b>&nbsp;|&nbsp;STUV&nbsp;WXYZ&nbsp;ABCD&nbsp;EFGH&nbsp;IJKL&nbsp;MNOP&nbsp;QR<br><b>T</b>&nbsp;|&nbsp;TUVW&nbsp;XYZA&nbsp;BCDE&nbsp;FGHI&nbsp;JKLM&nbsp;NOPQ&nbsp;RS<br><b>U</b>&nbsp;|&nbsp;UVWX&nbsp;YZAB&nbsp;CDEF&nbsp;GHIJ&nbsp;KLMN&nbsp;OPQR&nbsp;ST<br><b>V</b>&nbsp;|&nbsp;VWXY&nbsp;ZABC&nbsp;DEFG&nbsp;HIJK&nbsp;LMNO&nbsp;PQRS&nbsp;TU<br><b>W</b>&nbsp;|&nbsp;WXYZ&nbsp;ABCD&nbsp;EFGH&nbsp;IJKL&nbsp;MNOP&nbsp;QRST&nbsp;UV<br><b>X</b>&nbsp;|&nbsp;XYZA&nbsp;BCDE&nbsp;FGHI&nbsp;JKLM&nbsp;NOPQ&nbsp;RSTU&nbsp;VW<br><b>Y</b>&nbsp;|&nbsp;YZAB&nbsp;CDEF&nbsp;GHIJ&nbsp;KLMN&nbsp;OPQR&nbsp;STUV&nbsp;WX<br><b>Z</b>&nbsp;|&nbsp;ZABC&nbsp;DEFG&nbsp;HIJK&nbsp;LMNO&nbsp;PQRS&nbsp;TUVW&nbsp;XY</tt></div>
+<p>Passphrase:  <input type="text" name="pass" value="" _oldvalue=""></p>
+<p>Your message:<br><textarea name="text" rows="2" cols="40" _oldvalue=""></textarea></p>
+</form>
+<p>This is your encoded or decoded text:</p>
+<table class="r_box" style="margin-top: 8px; margin-bottom: 8px;font-family: monospace" cellspacing="0" cellpadding="0" border="0" align="center"><tbody><tr><td class="r_box"><p><b><tt><span id="output">Type in a message and see the results here!</span></tt></b>
+</p></td></tr></tbody></table><div style="clear: both"></div>
+</div>
+
+<img src="logo.jpg" style="float: right; margin-left: 2px; margin-bottom: 2px; height:100px">
+</td></tr></tbody></table>
+</td></tr>
+</tbody></table>
+
+
+</body></html>

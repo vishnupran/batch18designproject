@@ -1,0 +1,194 @@
+<html>
+<link type="text/css" rel="stylesheet" id="dark-mode-custom-link">
+<link type="text/css" rel="stylesheet" id="dark-mode-general-link">
+<style type="text/css" id="dark-mode-custom-style" lang="en"></style>
+<style type="text/css" id="dark-mode-native-style" lang="en"></style>
+<head>
+  <title>Double Transposition</title>
+<link rel="SHORTCUT ICON" href="/favicon.ico">
+
+<script language="JavaScript" src="util.js"></script>
+<script language="JavaScript" src="coltrans.js"></script>
+<script language="JavaScript">
+
+
+var colkey1_text = '1', colkey2_text = '1';
+
+function upd()
+{
+   var key1unchanged = 1, key2unchanged = 1;
+   
+   if (IsUnchanged(document.encoder.colkey1) + 
+       IsUnchanged(document.encoder.colkey1_type) < 2)
+   {
+      key1unchanged = 0;
+      colkey1_text = MakeColumnKey(document.encoder.colkey1_type.value,
+         document.encoder.colkey1.value);
+      var c = document.getElementById('colkey1_out');
+      c.innerHTML = colkey1_text;
+   }
+      
+   if (IsUnchanged(document.encoder.colkey2) + 
+       IsUnchanged(document.encoder.colkey2_type) < 2)
+   {
+      key2unchanged = 0;
+      colkey2_text = MakeColumnKey(document.encoder.colkey2_type.value,
+         document.encoder.colkey2.value);
+      var c = document.getElementById('colkey2_out');
+      c.innerHTML = colkey2_text;
+   }
+      
+  
+   if (IsUnchanged(document.encoder.text) *
+     IsUnchanged(document.encoder.use_as_column_order) *
+       IsUnchanged(document.encoder.encdec) *
+       key1unchanged * key2unchanged)
+   {
+      window.setTimeout('upd()', 100);
+      return;
+   }
+
+   ResizeTextArea(document.encoder.text);
+   
+   var e = document.getElementById('output');
+   
+   if (document.encoder.text.value == '')
+   {
+      e.innerHTML = 'Type in a message and see the results here!';
+   }
+   else
+   {
+      var c = document.encoder.text.value;
+     var ck1t = colkey1_text;
+     var ck2t = colkey2_text;
+     if (document.encoder.use_as_column_order.checked) {
+       original = ck1t.split(' ');
+       ck1t = new Array(original.length);
+      
+      for (var i = 0; i < original.length; i ++) {
+        ck1t[original[i] - 1] = i + 1;
+      }
+
+       ck1t = ck1t.join(' ');
+
+       original = ck2t.split(' ');
+       ck2t = new Array(original.length);
+      
+      for (var i = 0; i < original.length; i ++) {
+        ck2t[original[i] - 1] = i + 1;
+      }
+
+       ck2t = ck2t.join(' ');
+    }
+      c = ColTrans(document.encoder.encdec.value * 1, c, ck1t);
+      c = ColTrans(document.encoder.encdec.value * 1, c, ck2t);
+      e.innerHTML = SwapSpaces(HTMLEscape(c));
+   }
+   
+   window.setTimeout('upd()', 100);
+}
+
+
+function start_update()
+{
+   if (! document.getElementById)
+   {
+      alert('Sorry, you need a newer browser.');
+      return;
+   }
+
+   if ((! document.ColTrans_Loaded) || (! document.Util_Loaded) ||
+       (! document.getElementById('output')) ||
+       (! document.getElementById('colkey1_out')) ||
+       (! document.getElementById('colkey2_out')))
+   {
+      window.setTimeout('start_update()', 100);
+      return;
+   }
+   upd();
+}
+
+  
+function load_k3()
+{
+   document.encoder.encdec.value = -1;
+   document.encoder.colkey1_type.value = "ahpla";
+   document.encoder.colkey1.value = "aaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+   document.encoder.colkey2_type.value = "ahpla";
+   document.encoder.colkey2.value = "aaaaaaaaaaaaaaaaaaaaa";
+   document.encoder.text.value = "ENDyaHrOHNLSRHEOCPTEOIBIDYSHNAIA\n" +
+      "CHTNREYULDSLLSlLNOHSNOSMRWXMNE\n" +
+      "TPRNGATIHNRARPESLNNELEBLPIIACAE\n" +
+      "WMTWNDITEENRAHCTENEUDRETNHAEOE\n" +
+      "TFOLSEDTIWENHAEIOYTEYQHEENCTAYCR\n" +
+      "EIFTBRSPAMHHEWENATAMATEGYEERLB\n" +
+      "TEEFOAsFIOTUETUAEOTOARMAEERTNRTI\n" +
+      "BSEDDNIAAHTTMSTEWPIEROAGRIEWFEB\n" +
+      "AECTDDHILCEIHSITEGOEAOSDDRYDLORIT\n" +
+      "RKLMLEHAGTDHARDPNEOHMGFMFEUHE\n" +
+      "ECDMRIPFEIMEHNLSSTTRTVDOHW?";
+}
+
+
+window.setTimeout('start_update()', 100);
+
+// --></script>
+<link rel="stylesheet" type="text/css" href="base.css">
+<link rel="stylesheet" type="text/css" media="screen,projection" href="valentine.css">
+<link rel="stylesheet" type="text/css" media="print" href="print.css">
+<script src="/inc/js/site.js?1" type="text/javascript"></script>
+<style type="text/css">
+  #content img {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+</style>
+</head>
+<body>
+  <div id="content">
+    <img src="logo.jpg" width="400px" height="100px">
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<table width="100%" height="100%" cellspacing="0" cellpadding="0" border="0">
+<tbody><tr><td valign="top">
+
+
+<table width="100%" cellspacing="0" cellpadding="0" border="0"><tbody><tr><td width="99%" valign="top"><div class="r_main">
+
+<p> It is just a <a href="column-transposition.html">columnar transposition</a> followed by another columnar
+transposition.</p>
+
+<form name="encoder" method="post" action="#" onsubmit="return false;">
+<p><select name="encdec" _oldvalue="1"><option value="1">Encrypt
+</option><option value="-1">Decrypt</option></select></p>
+<p><select name="colkey1_type" _oldvalue="alpha"><option value="num">Numeric Key - Spaced Numbers
+</option><option value="alpha">Key Word(s) - Duplicates numbered forwards
+</option><option value="ahpla">Key Word(s) - Duplicates numbered backwards
+</option></select>:  <input type="text" name="colkey1" _oldvalue="dsf"><br>
+The resulting columnar key:  <b><span id="colkey1_out">1 3 2</span></b></p>
+<p><select name="colkey2_type" _oldvalue="alpha"><option value="num">Numeric Key - Spaced Numbers
+</option><option value="alpha">Key Word(s) - Duplicates numbered forwards
+</option><option value="ahpla">Key Word(s) - Duplicates numbered backwards
+</option></select>:  <input type="text" name="colkey2" _oldvalue="zxv"><br>
+The resulting columnar key:  <b><span id="colkey2_out">3 2 1</span></b></p>
+<p><input type="checkbox" name="use_as_column_order" _oldvalue="false"> - <label for="use_as_column_order">Use the keys as column orders instead of column labels</label></p>
+<p><textarea name="text" rows="2" cols="40" _oldvalue=""></textarea></p>
+</form>
+<p>This is your encoded or decoded text:</p>
+<table class="r_box" style="margin-top: 8px; margin-bottom: 8px;font-family: monospace" cellspacing="0" cellpadding="0" border="0" align="center"><tbody><tr><td class="r_box"><span id="output">Type in a message and see the results here!</span>
+</td></tr></tbody></table><div style="clear: both"></div>
+</div>
+<img src="logo.jpg" style="float: right; margin-left: 2px; margin-bottom: 2px; height:100px">
+</td></tr></tbody></table>
+</td></tr>
+</tbody></table>
+
+
+</body></html>

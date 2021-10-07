@@ -1,0 +1,138 @@
+<html>
+      <link type="text/css" rel="stylesheet" id="dark-mode-custom-link">
+      <link type="text/css" rel="stylesheet" id="dark-mode-general-link">
+      <style type="text/css" id="dark-mode-custom-style" lang="en"></style>
+      <style type="text/css" id="dark-mode-native-style" lang="en"></style>
+        <head>
+
+         <title>Caesarian Shift</title>
+<link rel="SHORTCUT ICON" href="/favicon.ico">
+
+<script language="JavaScript" src="caesar.js"></script>
+<script language="JavaScript" src="util.js"></script>
+<script language="JavaScript">
+
+
+function start_update()
+{
+   if (! document.getElementById)
+   {
+      alert('Sorry, you need a newer browser.');
+      return;
+   }
+
+   if ((! document.Caesar_Loaded) || (! document.Util_Loaded) ||
+       (! document.getElementById('caesar')))
+   {
+      window.setTimeout('start_update()', 100);
+      return;
+   }
+   upd();
+}
+
+
+function upd()
+{
+   if (IsUnchanged(document.encoder.N) *
+       IsUnchanged(document.encoder.text))
+   {
+      window.setTimeout('upd()', 100);
+      return;
+   }
+   
+   var e = document.getElementById('caesar');
+
+   if (document.encoder.text.value == '')
+   {
+      e.innerHTML = 'Type in a message and see the results here!';
+   }
+   else
+   {
+      e.innerHTML = SwapSpaces(HTMLEscape(Caesar(1, document.encoder.text.value, 
+         document.encoder.N.value * 1)));
+   }
+   
+   window.setTimeout('upd()', 100);
+}
+
+function insert_alphabet()
+{
+   document.encoder.text.value = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+}
+
+window.setTimeout('start_update()', 100);
+
+// --></script>
+<link rel="stylesheet" type="text/css" href="base.css">
+<link rel="stylesheet" type="text/css" media="screen,projection" href="valentine.css">
+<link rel="stylesheet" type="text/css" media="print" href="print.css">
+<script src="/inc/js/site.js?1" type="text/javascript"></script>
+<style type="text/css">
+  #content img {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+</style>
+</head>
+<body>
+  <div id="content">
+    <img src="logo.jpg" width="400px" height="100px">
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<table width="100%" height="100%" cellspacing="0" cellpadding="0" border="0">
+<tbody><tr><td valign="top">
+
+
+<table width="100%" cellspacing="0" cellpadding="0" border="0"><tbody><tr><td width="99%" valign="top"><div class="r_main">
+
+<p>In cryptography, a Caesar cipher, also known as Caesar's cipher, the shift cipher, Caesar's code or Caesar shift, is one of the simplest and most widely known encryption techniques. It is a type of substitution cipher in which each letter in the plaintext is replaced by a letter some fixed number of positions down the alphabet. A simple test to see how this works would be to <a href="#" onclick="insert_alphabet(); return false">insert the alphabet</a>
+into the encoder and then change the values of N.</p>
+	
+
+<form name="encoder" method="post" action="#" onsubmit="return false;">
+<p>N:  <select name="N" _oldvalue="0">
+<option value="0">0</option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+<option value="13">13</option>
+<option value="14">14</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+<option value="25">25</option>
+</select>
+</p><p><textarea name="text" rows="5" cols="80" _oldvalue=""></textarea></p>
+</form>
+<p>This is your encoded or decoded text:</p>
+<table class="r_box" style="margin-top: 8px; margin-bottom: 8px;font-family: monospace" cellspacing="0" cellpadding="0" border="0" align="center"><tbody><tr><td class="r_box"><span id="caesar">Type in a message and see the results here!</span>
+</td></tr></tbody></table><div style="clear: both"></div>
+</div>
+<img src="logo.jpg" style="float: right; margin-left: 2px; margin-bottom: 2px; height:100px">
+</td></tr></tbody></table>
+</td></tr>
+</td></tr></tbody></table>
+</body></html>

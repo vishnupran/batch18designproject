@@ -1,0 +1,122 @@
+<html>
+<link type="text/css" rel="stylesheet" id="dark-mode-custom-link">
+<link type="text/css" rel="stylesheet" id="dark-mode-general-link">
+<style type="text/css" id="dark-mode-custom-style" lang="en"></style>
+<style type="text/css" id="dark-mode-native-style" lang="en"></style>
+<head>
+  <title>One Time Pad</title>
+<link rel="SHORTCUT ICON" href="/favicon.ico">
+
+<script language="JavaScript" src="otp.js"></script>
+<script language="JavaScript" src="util.js"></script>
+<script language="JavaScript"><!--
+
+
+function start_update()
+{
+   if (! document.getElementById)
+   {
+      alert('Sorry, you need a newer browser.');
+      return;
+   }
+
+   if ((! document.OneTimePad_Loaded) || (! document.Util_Loaded) ||
+       (! document.getElementById('output')))
+   {
+      window.setTimeout('start_update()', 100);
+      return;
+   }
+   upd();
+}
+
+
+function upd()
+{
+   if (IsUnchanged(document.encoder.text) *
+       IsUnchanged(document.encoder.pad) *
+       IsUnchanged(document.encoder.encdec))
+   {
+      window.setTimeout('upd()', 100);
+      return;
+   }
+   
+   ResizeTextArea(document.encoder.text);
+   ResizeTextArea(document.encoder.pad);
+
+   var e = document.getElementById('output');
+   
+   if (document.encoder.text.value != '' && document.encoder.pad.value != '')
+   {
+      e.innerHTML = SwapSpaces(HTMLEscape(OneTimePad(document.encoder.encdec.value * 1, 
+         document.encoder.text.value, document.encoder.pad.value)));
+   }
+   else
+   {
+      e.innerHTML = 'Type in a message and a pad to see the results.';
+   }
+   
+   window.setTimeout('upd()', 100);
+}
+
+window.setTimeout('start_update()', 100);
+
+// --></script>
+<link rel="stylesheet" type="text/css" href="base.css">
+<link rel="stylesheet" type="text/css" media="screen,projection" href="normal.css">
+<link rel="stylesheet" type="text/css" media="print" href="print.css">
+<script src="/inc/js/site.js?1" type="text/javascript"></script>
+<style type="text/css">
+  #content img {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+</style>
+</head>
+<body>
+  <div id="content">
+    <img src="logo.jpg" width="400px" height="100px">
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<table width="100%" height="100%" cellspacing="0" cellpadding="0" border="0">
+<tbody><tr><td valign="top">
+
+
+<table width="100%" cellspacing="0" cellpadding="0" border="0"><tbody><tr><td width="99%" valign="top"><div class="r_main">
+
+<p>It is said that the one-time pad is the best cipher anywhere.  It is
+uncrackable as long as you keep the messages short, use shorthand and
+abbreviations, remove unnecessary letters, never reuse a pad, and have a
+good enough random source for data.</p>
+
+<p>This implementation will take the letters (and letters only) from the pad
+and encrypt the letters from your message.  It leaves spaces, newlines
+(enters / returns), punctuation, numbers, and all of the things that aren't
+A-Z alone.  Make sure that your pad is at least as long as the number
+of characters in your message, otherwise your message will not be encoded.</p>
+
+<form name="encoder" method="post" action="#" onsubmit="return false;">
+<p><select name="encdec" _oldvalue="1">
+   <option value="1">Encrypt
+   </option><option value="-1">Decrypt
+</option></select>
+</p><p>Your message:<br><textarea name="text" rows="2" cols="40" _oldvalue=""></textarea></p>
+<p>The pad:<br><textarea name="pad" rows="2" cols="40" _oldvalue=""></textarea></p>
+</form>
+<table class="r_box" style="margin-top: 8px; margin-bottom: 8px;font-family: monospace" cellspacing="0" cellpadding="0" border="0" align="center"><tbody><tr><td class="r_box"><span id="output">Type in a message and a pad to see the results.</span>
+</td></tr></tbody></table><div style="clear: both"></div>
+</div>
+<img src="logo.jpg" style="float: right; margin-left: 2px; margin-bottom: 2px; height:100px">
+</td></tr></tbody></table>
+</td></tr>
+</tbody></table>
+
+
+
+</body></html>

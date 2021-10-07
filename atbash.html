@@ -1,0 +1,107 @@
+
+<html>
+     <link type="text/css" rel="stylesheet" id="dark-mode-custom-link">
+     <link type="text/css" rel="stylesheet" id="dark-mode-general-link">
+     <style type="text/css" id="dark-mode-custom-style" lang="en"></style>
+     <style type="text/css" id="dark-mode-native-style" lang="en"></style>
+
+     <head>
+
+<title>Atbash Cipher</title>
+
+<link rel="SHORTCUT ICON" href="/favicon.ico">
+
+
+<script language="JavaScript" src="affine.js"></script>
+<script language="JavaScript" src="util.js"></script>
+<script language="JavaScript"><!--
+
+function start_update()
+{
+   if (! document.getElementById)
+   {
+      alert('Sorry, you need a newer browser.');
+      return;
+   }
+
+   if ((! document.Affine_Loaded) || (! document.Util_Loaded) ||
+       (! document.getElementById('affine')))
+   {
+      window.setTimeout('start_update()', 100);
+      return;
+   }
+   upd();
+}
+
+
+function upd()
+{
+   if (IsUnchanged(document.encoder.text))
+   {
+      window.setTimeout('upd()', 100);
+      return;
+   }
+   
+   var e = document.getElementById('affine');
+
+   if (document.encoder.text.value == '')
+   {
+      e.innerHTML = 'Type in a message and see the results here!';
+   }
+   else
+   {
+      e.innerHTML = SwapSpaces(HTMLEscape(Affine(1, document.encoder.text.value, 25, 25)));
+   }
+   
+   window.setTimeout('upd()', 100);
+}
+
+window.setTimeout('start_update()', 100);
+
+// --></script>
+<link rel="stylesheet" type="text/css" href="base.css">
+<link rel="stylesheet" type="text/css" media="screen,projection" href="valentine.css">
+<link rel="stylesheet" type="text/css" media="print" href="print.css">
+<script src="/inc/js/site.js?1" type="text/javascript"></script>
+<style type="text/css">
+  #content img {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+</style>
+</head>
+<body>
+  <div id="content">
+    <img src="logo.jpg" width="400px" height="100px">
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<table width="100%" height="100%" cellspacing="0" cellpadding="0" border="0">
+<tbody><tr><td valign="top">
+
+
+<table width="100%" cellspacing="0" cellpadding="0" border="0"><tbody><tr><td width="99%" valign="top"><div class="r_main">
+
+<p>The Atbash cipher is a very common, simple cipher.  It was for the Hebrew alphabet, but modified here to work with the English alphabet.  Basically, when encoded, an "A" becomes a "Z", "B" turns into "Y", etc.</p>
+
+
+
+<form name="encoder" method="post" action="#" onsubmit="return false;">
+<p><textarea name="text" rows="5" cols="80" _oldvalue=""></textarea></p>
+</form>
+<p>This is your encoded/decoded text:</p>
+<table class="r_box" style="margin-top: 8px; margin-bottom: 8px;font-family: monospace" cellspacing="0" cellpadding="0" border="0" align="center"><tbody><tr><td class="r_box"><span id="affine">Type in a message and see the results here!</span>
+</td></tr></tbody></table><div style="clear: both"></div>
+</div>
+<img src="logo.jpg" style="float: right; margin-left: 2px; margin-bottom: 2px; height:100px">
+</td></tr></tbody></table>
+</td></tr>
+</tbody></table>
+
+</body></html>

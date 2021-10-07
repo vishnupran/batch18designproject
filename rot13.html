@@ -1,0 +1,107 @@
+<html>
+<link type="text/css" rel="stylesheet" id="dark-mode-custom-link">
+<link type="text/css" rel="stylesheet" id="dark-mode-general-link">
+<style type="text/css" id="dark-mode-custom-style" lang="en"></style>
+<style type="text/css" id="dark-mode-native-style" lang="en"></style>
+<head><title>ROT13</title>
+<link rel="SHORTCUT ICON" href="/favicon.ico">
+
+<script language="JavaScript" src="caesar.js"></script>
+<script language="JavaScript" src="util.js"></script>
+<script language="JavaScript"><!--
+
+function start_update()
+{
+   if (! document.getElementById)
+   {
+      alert('Sorry, you need a newer browser.');
+      return;
+   }
+
+   if ((! document.Caesar_Loaded) || (! document.Util_Loaded) ||
+       (! document.getElementById('output')))
+   {
+      window.setTimeout('start_update()', 100);
+      return;
+   }
+   upd();
+}
+
+
+function upd()
+{
+   if (IsUnchanged(document.encoder.text))
+   {
+      window.setTimeout('upd()', 100);
+      return;
+   }
+
+   ResizeTextArea(document.encoder.text);
+   
+   var e = document.getElementById('output');
+   
+   if (document.encoder.text.value == '')
+   {
+      e.innerHTML = 'Enter your text and see the converted message here!';
+   }
+   else
+   {
+      e.innerHTML = SwapSpaces(HTMLEscape(Caesar(1,
+	document.encoder.text.value, 13)));
+   }
+   
+   window.setTimeout('upd()', 100);
+}
+
+window.setTimeout('start_update()', 100);
+
+// --></script>
+<link rel="stylesheet" type="text/css" href="base.css">
+<link rel="stylesheet" type="text/css" media="screen,projection" href="valentine.css">
+<link rel="stylesheet" type="text/css" media="print" href="print.css">
+<script src="/inc/js/site.js?1" type="text/javascript"></script>
+<style type="text/css">
+  #content img {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+</style>
+</head>
+<body>
+  <div id="content">
+    <img src="logo.jpg" width="400px" height="100px">
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<table width="100%" height="100%" cellspacing="0" cellpadding="0" border="0">
+<tbody><tr><td valign="top">
+
+
+<table width="100%" cellspacing="0" cellpadding="0" border="0"><tbody><tr><td width="99%" valign="top"><div class="r_main">
+
+
+<p>Rot 13 is almost similar to <a href="caesar.html">Caesar Cipher (13) </a>, which is also called
+a Caesarian Shift, so you can see what your sentence looks like
+if it is off by one character, 19 characters, or however many you want.
+Additionally, the <a href="vigenere.php">Vigenere</a> cipher is very
+similar.</p>
+
+<form name="encoder" method="post" action="#" onsubmit="return false;">
+<p><textarea name="text" rows="2" cols="40" _oldvalue=""></textarea></p>
+</form>
+<p>This is your encoded or decoded text:</p>
+<table class="r_box" style="margin-top: 8px; margin-bottom: 8px;font-family: monospace" cellspacing="0" cellpadding="0" border="0" align="center"><tbody><tr><td class="r_box"><span id="output">Enter your text and see the converted message here!</span>
+</td></tr></tbody></table><div style="clear: both"></div>
+</div>
+<img src="logo.jpg" style="float: right; margin-left: 2px; margin-bottom: 2px; height:100px">
+</td></tr></tbody></table>
+</td></tr>
+</tbody></table>
+
+
+</body></html>

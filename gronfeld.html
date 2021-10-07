@@ -1,0 +1,177 @@
+<html>
+<link type="text/css" rel="stylesheet" id="dark-mode-custom-link">
+<link type="text/css" rel="stylesheet" id="dark-mode-general-link">
+<style type="text/css" id="dark-mode-custom-style" lang="en"></style>
+<style type="text/css" id="dark-mode-native-style" lang="en"></style>
+<head>
+  <title>Gronsfeld Cipher</title>
+
+<link rel="SHORTCUT ICON" href="/favicon.ico">
+
+<script language="JavaScript" src="util.js"></script>
+
+<script language="JavaScript" src="vigenere.js"></script>
+
+<script language="JavaScript" src="keymaker.js"></script>
+<script language="JavaScript"><!--
+
+
+function start_update()
+{
+   if (! document.getElementById)
+   {
+      alert('Sorry, you need a newer browser.');
+      return;
+   }
+
+   if ((! document.Vigenere_Loaded) || (! document.Util_Loaded) ||
+       (! document.Keymaker_Loaded) ||
+       (! document.getElementById('output')))
+   {
+      window.setTimeout('start_update()', 100);
+      return;
+   }
+   Keymaker_Start();
+   upd();
+}
+
+
+function upd()
+{
+   var e, keyunchanged, passunchanged;
+   
+   keyunchanged = IsUnchanged(document.encoder.key);
+   passunchanged = IsUnchanged(document.encoder.pass);
+   
+   if (keyunchanged * passunchanged * 
+       IsUnchanged(document.encoder.text) *
+       IsUnchanged(document.encoder.encdec))
+   {
+      window.setTimeout('upd()', 200);
+      return;
+   }
+	
+   ResizeTextArea(document.encoder.text);
+   
+   if (! keyunchanged)
+   {
+      e = document.getElementById('alphabet');
+      e.innerHTML = MakeKeyedAlphabet(document.encoder.key.value);
+      e = document.getElementById('tableau');
+      e.innerHTML = BuildTableau(document.encoder.key.value, 10);
+   }
+   
+   if (! passunchanged)
+   {
+      e = document.getElementById('vigenere');
+      e.innerHTML = GronsfeldToVigenere(document.encoder.pass.value);
+   }
+
+   e = document.getElementById('output');
+   
+   if (document.encoder.text.value == '')
+   {
+      e.innerHTML = 'Type in a message and see the results here!';
+   }
+   else
+   {
+      e.innerHTML = SwapSpaces(HTMLEscape(Vigenere(document.encoder.encdec.value * 1, 
+         document.encoder.text.value, 
+	 GronsfeldToVigenere(document.encoder.pass.value),
+	 document.encoder.key.value)));
+   }
+   window.setTimeout('upd()', 200);
+}
+	
+toggle = 0;
+function ToggleTableau()
+{
+   var Link, Vis;
+   
+   if (toggle == 0)
+   {
+      toggle = 1;
+      Link = "Hide Tableau";
+      Vis = "block";
+   }
+   else
+   {
+      toggle = 0;
+      Link = "Show Tableau";
+      Vis = "none";
+   }
+   
+   e = document.getElementById('tableau_link');
+   e.innerHTML = Link;
+   
+   e = document.getElementById('tableau');
+   e.style.display = Vis;
+}
+
+window.setTimeout('start_update()', 100);
+
+// --></script>
+<link rel="stylesheet" type="text/css" href="base.css">
+
+<link rel="stylesheet" type="text/css" media="screen,projection" href="normal.css">
+
+<link rel="stylesheet" type="text/css" media="print" href="print.css">
+
+<script src="/inc/js/site.js?1" type="text/javascript"></script>
+<style type="text/css">
+  #content img {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+</style>
+</head>
+<body>
+  <div id="content">
+    <img src="logo.jpg" width="400px" height="100px">
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<table width="100%" height="100%" cellspacing="0" cellpadding="0" border="0">
+<tbody><tr><td valign="top">
+
+
+<table width="100%" cellspacing="0" cellpadding="0" border="0"><tbody><tr><td width="99%" valign="top"><div class="r_main">
+	
+<p>The Gronsfeld cipher is essentially a <a href="vigenere.html">Vigenere</a>
+cipher, but uses numbers instead of letters.  So, a Gronsfield key of 0123
+is the same as a Vigenere key of ABCD.  This online version lets you encode
+and decode messages with a keyed alphabet as well, to allow for maximum
+flexibility.</p>
+
+<form name="encoder" method="post" action="#" onsubmit="return false;">
+<p><select name="encdec" _oldvalue="1">
+   <option value="1">Encrypt
+   </option><option value="-1">Decrypt
+</option></select>
+</p><p>Alphabet Key:  <input type="text" name="key" value="" size="30" _oldvalue=""> -
+<span id="Keymaker0" target="document.encoder.key.value" _showkeymaker="show"><a href="#" onclick="return KeymakerToggle(0)">Show Keymaker</a></span></p>
+<p>Alphabet Used:  <b><tt><span id="alphabet">ABCDEFGHIJKLMNOPQRSTUVWXYZ</span></tt></b> - 
+<a id="tableau_link" href="#" onclick="ToggleTableau(); return false">Show 
+Tableau</a></p>
+<div id="tableau" style="display: none"><tt><b><u>&nbsp;&nbsp;|&nbsp;ABCD&nbsp;EFGH&nbsp;IJKL&nbsp;MNOP&nbsp;QRST&nbsp;UVWX&nbsp;YZ</u></b><br><b>A</b>&nbsp;|&nbsp;ABCD&nbsp;EFGH&nbsp;IJKL&nbsp;MNOP&nbsp;QRST&nbsp;UVWX&nbsp;YZ<br><b>B</b>&nbsp;|&nbsp;BCDE&nbsp;FGHI&nbsp;JKLM&nbsp;NOPQ&nbsp;RSTU&nbsp;VWXY&nbsp;ZA<br><b>C</b>&nbsp;|&nbsp;CDEF&nbsp;GHIJ&nbsp;KLMN&nbsp;OPQR&nbsp;STUV&nbsp;WXYZ&nbsp;AB<br><b>D</b>&nbsp;|&nbsp;DEFG&nbsp;HIJK&nbsp;LMNO&nbsp;PQRS&nbsp;TUVW&nbsp;XYZA&nbsp;BC<br><b>E</b>&nbsp;|&nbsp;EFGH&nbsp;IJKL&nbsp;MNOP&nbsp;QRST&nbsp;UVWX&nbsp;YZAB&nbsp;CD<br><b>F</b>&nbsp;|&nbsp;FGHI&nbsp;JKLM&nbsp;NOPQ&nbsp;RSTU&nbsp;VWXY&nbsp;ZABC&nbsp;DE<br><b>G</b>&nbsp;|&nbsp;GHIJ&nbsp;KLMN&nbsp;OPQR&nbsp;STUV&nbsp;WXYZ&nbsp;ABCD&nbsp;EF<br><b>H</b>&nbsp;|&nbsp;HIJK&nbsp;LMNO&nbsp;PQRS&nbsp;TUVW&nbsp;XYZA&nbsp;BCDE&nbsp;FG<br><b>I</b>&nbsp;|&nbsp;IJKL&nbsp;MNOP&nbsp;QRST&nbsp;UVWX&nbsp;YZAB&nbsp;CDEF&nbsp;GH<br><b>J</b>&nbsp;|&nbsp;JKLM&nbsp;NOPQ&nbsp;RSTU&nbsp;VWXY&nbsp;ZABC&nbsp;DEFG&nbsp;HI</tt></div>
+<p>Cipher Key:  <input type="text" name="pass" value="" _oldvalue=""></p>
+<p>Vigenere Equivalent:  <span id="vigenere"></span></p>
+<p>Your message:<br><textarea name="text" rows="2" cols="40" _oldvalue=""></textarea></p>
+</form>
+<p>This is your encoded or decoded text:</p>
+<table class="r_box" style="margin-top: 8px; margin-bottom: 8px;font-family: monospace" cellspacing="0" cellpadding="0" border="0" align="center"><tbody><tr><td class="r_box"><p><b><tt><span id="output">Type in a message and see the results here!</span></tt></b>
+</p></td></tr></tbody></table><div style="clear: both"></div>
+</div>
+<img src="logo.jpg" style="float: right; margin-left: 2px; margin-bottom: 2px; height:100px">
+</td></tr></tbody></table>
+</td></tr>
+</tbody></table>
+
+
+</body></html>

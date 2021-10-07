@@ -1,0 +1,195 @@
+<html>
+<link type="text/css" rel="stylesheet" id="dark-mode-custom-link">
+<link type="text/css" rel="stylesheet" id="dark-mode-general-link">
+<style type="text/css" id="dark-mode-custom-style" lang="en"></style>
+<style type="text/css" id="dark-mode-native-style" lang="en"></style>
+<head>
+  <title>Keyed Caesar</title>
+<link rel="SHORTCUT ICON" href="/favicon.ico">
+
+<script language="JavaScript" src="caesar.js"></script>
+<script language="JavaScript" src="keymaker.js"></script>
+<script language="JavaScript" src="util.js"></script>
+<script language="JavaScript"><!--
+
+
+function start_update()
+{
+   if (! document.getElementById)
+   {
+      alert('Sorry, you need a newer browser.');
+      return;
+   }
+
+   if ((! document.Caesar_Loaded) || (! document.Util_Loaded) ||
+       (! document.Keymaker_Loaded) ||
+       (! document.getElementById('caesar')))
+   {
+      window.setTimeout('start_update()', 100);
+      return;
+   }
+   Keymaker_Start();
+   upd();
+}
+
+
+function upd()
+{
+   var e, keyunchanged = 1, textunchanged = 1;
+
+   if (! IsUnchanged(document.encoder.key))
+   {
+      keyunchanged = 0;
+      e = document.getElementById('alphabet');
+      e.innerHTML = HTMLEscape(MakeKeyedAlphabet(document.encoder.key.value));
+   }
+	
+   if (! IsUnchanged(document.encoder.text))
+   {
+      textunchanged = 0;
+      ResizeTextArea(document.encoder.text);
+   }
+   
+   if (keyunchanged *
+       textunchanged *
+       IsUnchanged(document.encoder.N) *
+       IsUnchanged(document.encoder.encdec))
+   {
+      window.setTimeout('upd()', 100);
+      return;
+   }
+       
+   e = document.getElementById('caesar');
+   
+   if (document.encoder.text.value == '')
+   {
+      e.innerHTML = 'Type a message and see the results here!';
+   }
+   else
+   {
+      e.innerHTML = SwapSpaces(HTMLEscape(Caesar(document.encoder.encdec.value * 1,
+         document.encoder.text.value, document.encoder.N.value * 1,
+	 document.encoder.key.value)));
+   }
+
+   window.setTimeout('upd()', 100);
+}
+
+function insert_alphabet()
+{
+   document.encoder.text.value = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+   upd();
+}
+	
+function ZapSpaces()
+{
+   var i, s = "", t;
+   
+   t = document.encoder.text.value;
+   for (i = 0; i < t.length; i ++)
+   {
+      if (t.charAt(i) != ' ')
+      {
+         s += t.charAt(i);
+      }
+   }
+   document.encoder.text.value = s;
+   upd();
+}
+
+window.setTimeout('start_update()', 100);
+
+// --></script>
+<link rel="stylesheet" type="text/css" href="base.css">
+<link rel="stylesheet" type="text/css" media="screen,projection" href="valentine.css">
+<link rel="stylesheet" type="text/css" media="print" href="print.css">
+<script src="/inc/js/site.js?1" type="text/javascript"></script>
+<style type="text/css">
+  #content img {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+.c
+</style>
+<body>
+  <div id="content">
+    <img src="logo.jpg" width="400px" height="100px">
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<table width="100%" height="100%" cellspacing="0" cellpadding="0" border="0">
+<tbody><tr><td valign="top">
+
+
+<table width="100%" cellspacing="0" cellpadding="0" border="0"><tbody><tr><td width="99%" valign="top"><div class="r_main">
+
+<p>The keyed Caesar cipher is a variant of the Caesar Cipher that provides increased protection. Instead of having all letters in alphabetical order, it starts with a code word (the encryption key). Unused letters are then added after the code word. If the code word is blank, it behaves exactly like an ordinary Caesar Cipher.</p>
+
+<table cellspacing="0" cellpadding="3" border="1" align="center">
+<tbody><tr><th colspan="2">Example Alphabets, No Shift</th>
+</tr><tr><th>Standard</th><td><tt>ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+ABCDEFGHIJKLMNOPQRSTUVWXYZ</tt></td></tr>
+<tr><th>Keyed</th><td><tt>ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+<b>rumkinco</b>ABDEFGHJLPQSTVWXYZ</tt></td></tr>
+</tbody></table>
+
+<p> This is similar to the <a href="rot13.html">rot13</a> cipher, and can also be performed with the <a href="cryptogram.html">cryptogram solver</a>.  A simple test to see how this
+works would be to <a href="#" onclick="insert_alphabet(); return false">insert
+the alphabet</a> into the encoder and then change "Shift" and modify
+the key.</p>
+
+<form name="encoder" method="post" action="#" onsubmit="return false;">
+<p><select name="encdec" _oldvalue="1">
+   <option value="1">Encrypt
+   </option><option value="-1">Decrypt
+</option></select>
+</p><p>Shift:  <select name="N" _oldvalue="0">
+<option value="0">0</option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+<option value="13">13</option>
+<option value="14">14</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+<option value="25">25</option>
+</select>
+</p><p>The key:  <input type="text" name="key" size="40" value="" _oldvalue=""> - 
+<span id="Keymaker0" target="document.encoder.key.value" _showkeymaker="show"><a href="#" onclick="return KeymakerToggle(0)">Show Keymaker</a></span></p>
+<p>Alphabet Used:  <tt><b><span id="alphabet">ABCDEFGHIJKLMNOPQRSTUVWXYZ</span></b></tt></p>
+<p><textarea name="text" rows="2" cols="40" _oldvalue="" style="width: 446px; height: 171px;"></textarea></p>
+</form>
+<p>This is your encoded or decoded text:</p>
+<table class="r_box" style="margin-top: 8px; margin-bottom: 8px;font-family: monospace" cellspacing="0" cellpadding="0" border="0" align="center"><tbody><tr><td class="r_box"><span id="caesar">Type a message and see the results here!</span>
+</td></tr></tbody></table><div style="clear: both"></div>
+</div>
+<img src="logo.jpg" style="float: right; margin-left: 2px; margin-bottom: 2px; height:100px">
+</td></tr></tbody></table>
+</td></tr>
+</tbody></table>
+
+</body></html>

@@ -1,0 +1,224 @@
+<html>
+<link type="text/css" rel="stylesheet" id="dark-mode-custom-link">
+<link type="text/css" rel="stylesheet" id="dark-mode-general-link">
+<style type="text/css" id="dark-mode-custom-style" lang="en"></style>
+<style type="text/css" id="dark-mode-native-style" lang="en"></style>
+<head>
+  <title>Letter Numbers</title>
+<link rel="SHORTCUT ICON" href="/favicon.ico">
+
+<script language="JavaScript" src="util.js"></script>
+<script language="JavaScript"><!--
+
+
+
+function encode(str, meth)
+{
+   var lett = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+   var out = "";
+   var addHyphen = 0;
+   
+   var pad = meth.charAt(1) * 1;
+   var hyph = meth.charAt(3) * 1;
+   
+   for (var i = 0; i < str.length; i ++)
+   {
+      c = str.charAt(i);
+      j = lett.indexOf(c.toUpperCase()) + 1;
+      if (j < 10 && pad)
+      {
+         j = "0" + j;
+      }
+      if (j * 1 > 0)
+      {
+         if (addHyphen && hyph)
+	 {
+	    out = out + '-';
+	 }
+         out = out + j;
+	 addHyphen = 1;
+      }
+      else
+      {
+         if (addHyphen)
+	 {
+	    if (c.charCodeAt(0) == 10 || c.charCodeAt(0) == 13)
+	    {
+	       out += c;
+	    }
+	    else
+	    {
+	       out += ' ';
+	    }
+	 }
+	 addHyphen = 0;
+      }
+   }
+
+   return out;
+}
+
+
+function decode(str, meth)
+{
+   var lett = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+   var num = '0123456789';
+   var out = "";
+   var was_letter = 0;
+   
+   var pad = meth.charAt(1) * 1;
+   var hyph = meth.charAt(3) * 1;
+   
+   for (var i = 0; i < str.length; i ++)
+   {
+      c = str.charAt(i);
+      j = num.indexOf(c);
+      if (j < 0)
+      {
+         if (! was_letter || ! hyph || c != "-")
+	 {
+	    out += c;
+	 }
+	 was_letter = 0;
+      }
+      else
+      {
+         // Do a number lookahead
+	 was_letter = j;
+	 if (str.length > i + 1)
+	 {
+	    j = num.indexOf(str.charAt(i + 1));
+	    if (j >= 0)
+	    {
+	       i ++;
+	       was_letter = (was_letter * 10) + j;
+	    }
+	 }
+	 if (was_letter >= 1 && was_letter <= 26)
+	 {
+	    out += lett.charAt(was_letter - 1);
+	 }
+	 else
+	 {
+	    out += was_letter;
+	    was_letter = 0;
+	 }
+      }
+   }
+   
+   return out;
+}
+
+
+function upd()
+{
+   if (IsUnchanged(document.encoder.text) *
+       IsUnchanged(document.encoder.encdec) *
+       IsUnchanged(document.encoder.method))
+   {
+      window.setTimeout('upd()', 100);
+      return;
+   }
+
+   ResizeTextArea(document.encoder.text);
+
+   var e = document.getElementById('output');
+   if (document.encoder.text.value == '')
+   {
+      e.innerHTML = 'Type in a message to see the results!';
+   }
+   else if (document.encoder.encdec.value * 1 == 1)
+   {
+      e.innerHTML = HTMLEscape(encode(document.encoder.text.value, 
+         document.encoder.method.value));
+   }
+   else
+   {
+      e.innerHTML = HTMLEscape(decode(document.encoder.text.value, 
+         document.encoder.method.value));
+   }
+   
+   window.setTimeout('upd()', 100);
+}
+
+
+function start_update()
+{
+   if (! document.getElementById)
+   {
+      alert('Sorry, you need a newer browser.');
+      return;
+   }
+
+   if ((! document.Util_Loaded) ||
+       (! document.getElementById('output')))
+   {
+      window.setTimeout('start_update()', 100);
+      return;
+   }
+   upd();
+}
+
+
+window.setTimeout('start_update()', 100);
+
+// --></script>
+<link rel="stylesheet" type="text/css" href="base.css">
+<link rel="stylesheet" type="text/css" media="screen,projection" href="normal.css">
+<link rel="stylesheet" type="text/css" media="print" href="print.css">
+<script src="/inc/js/site.js?1" type="text/javascript"></script>
+<style type="text/css">
+  #content img {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+</style>
+</head>
+<body>
+   <div id="content">
+    <img src="logo.jpg" width="400px" height="100px">
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<table width="100%" height="100%" cellspacing="0" cellpadding="0" border="0">
+<tbody><tr><td valign="top">
+
+
+<table width="100%" cellspacing="0" cellpadding="0" border="0"><tbody><tr><td width="99%" valign="top"><div class="r_main">
+
+<p>One of the first ciphers that kids learn is this "letter number" cipher.
+You replace letters with a number: A=1, B=2, C=3, etc.</p>
+
+<p>When encrypting, only letters will be encoded.  Non-letters will be
+treated like spaces.  When decrypting, numbers will be changed back to
+letters, hyphens will be removed, and the rest fill act like spaces.</p>
+	
+<form name="encoder" method="post" action="#" onsubmit="return false;">
+<p><select name="encdec" _oldvalue="1">
+   <option value="1">Encrypt
+   </option><option value="-1">Decrypt
+</option></select>
+</p><p>Method:  "ABC XYZ" becomes <select name="method" _oldvalue="p0h1">
+   <option value="p0h1">1-2-3 24-25-26
+   </option><option value="p1h1">01-02-03 24-25-26
+   </option><option value="p1h0">010203 242526
+</option></select>
+</p><p>Your message:<br><textarea name="text" rows="2" cols="40" _oldvalue=""></textarea></p>
+</form>
+<p>This is your encoded or decoded text:</p>
+<table class="r_box" style="margin-top: 8px; margin-bottom: 8px;font-family: monospace" cellspacing="0" cellpadding="0" border="0" align="center"><tbody><tr><td class="r_box"><span id="output">Type in a message to see the results!</span>
+</td></tr></tbody></table><div style="clear: both"></div>
+</div>
+<img src="logo.jpg" style="float: right; margin-left: 2px; margin-bottom: 2px; height:100px">
+</td></tr></tbody></table>
+</td></tr>
+</tbody></table>
+
+
+</body></html>

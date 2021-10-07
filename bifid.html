@@ -1,0 +1,260 @@
+<html>
+<link type="text/css" rel="stylesheet" id="dark-mode-custom-link">
+<link type="text/css" rel="stylesheet" id="dark-mode-general-link">
+<style type="text/css" id="dark-mode-custom-style" lang="en"></style>
+<style type="text/css" id="dark-mode-native-style" lang="en"></style>
+<head>
+
+
+<title>Bifid Cipher</title>
+
+<link rel="SHORTCUT ICON" href="/favicon.ico">
+
+<script language="JavaScript" src="util.js"></script>
+<script language="JavaScript" src="keymaker.js"></script>
+<script language="JavaScript" src="bifid.js"></script>
+<script language="JavaScript">
+
+
+
+function start_update()
+{
+   if (! document.getElementById)
+   {
+      alert('Sorry, you need a newer browser.');
+      return;
+   }
+   
+   if ((! document.Bifid_Loaded) || (! document.Util_Loaded) ||
+       (! document.Keymaker_Loaded) ||
+       (! document.getElementById('output')))
+   {
+      window.setTimeout('start_update()', 100);
+      return;
+   }
+   
+   Keymaker_Start();
+   upd();
+}
+
+
+function upd()
+{
+   var keyunchanged = IsUnchanged(document.encoder.skip) *
+	   IsUnchanged(document.encoder.key);
+	   
+   if (keyunchanged == 0)
+   {
+      // Update the rectangle
+      var k, elem;
+      
+      k = MakeKeyedAlphabet(document.encoder.skip.value +
+         document.encoder.key.value);
+      k = k.slice(1, k.length);
+      elem = document.getElementById('alphabet');
+      elem.innerHTML = HTMLTableau(k);
+   }
+   
+   if (keyunchanged *
+       IsUnchanged(document.encoder.text) *
+       IsUnchanged(document.encoder.encdec) *
+       IsUnchanged(document.encoder.skipto))
+   {
+      window.setTimeout('upd()', 100);
+      return;
+   }
+
+   ResizeTextArea(document.encoder.text);
+      
+   var elem = document.getElementById('output');
+   
+   if (document.encoder.text.value != "")
+   {
+      elem.innerHTML = SwapSpaces(HTMLEscape(Bifid(document.encoder.encdec.value * 1,
+         document.encoder.text.value, document.encoder.skip.value,
+         document.encoder.skipto.value, document.encoder.key.value)));
+   }
+   else
+   {
+      elem.innerHTML = "Type in your message and see the results here!";
+   }
+      
+   window.setTimeout('upd()', 100);
+}
+
+
+function only_letters()
+{
+   document.encoder.text.value = OnlyAlpha(document.encoder.text.value);
+}
+
+
+function example_enc()
+{
+   document.encoder.encdec.value = 1;
+   document.encoder.skip.value = "J";
+   document.encoder.skipto.value = "I";
+   document.encoder.key.value = "";
+   document.encoder.text.value = "ABCD";
+}
+
+
+function wikipedia_enc()
+{
+   document.encoder.encdec.value = 1;
+   document.encoder.skip.value = "J";
+   document.encoder.skipto.value = "I";
+   document.encoder.key.value = "BGWKZQPNDSIOAXEFCLUMTHYVR";
+   document.encoder.text.value = "F L E E A T O N C E";
+}
+
+window.setTimeout('start_update()', 100);
+
+// --></script>
+<link rel="stylesheet" type="text/css" href="base.css">
+<link rel="stylesheet" type="text/css" media="screen,projection" href="valentine.css">
+<link rel="stylesheet" type="text/css" media="print" href="print.css">
+<script src="/inc/js/site.js?1" type="text/javascript"></script>
+<style type="text/css">
+  #content img {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+</style>
+</head>
+<body>
+  <div id="content">
+    <img src="logo.jpg" width="400px" height="100px">
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+<table width="100%" height="100%" cellspacing="0" cellpadding="0" border="0">
+<tbody><tr><td valign="top">
+
+
+<table width="100%" cellspacing="0" cellpadding="0" border="0"><tbody><tr><td width="99%" valign="top"><div class="r_main">
+
+<p>The Bifid cipher is considered a more secure cipher because it breaks the
+message apart into two separate streams and then recombines them.  This
+spreads the information out to multiple letters, increasing security.  It
+uses a table with one letter of the alphabet omitted.  Often the J is
+removed and people just use an I instead.  Below is an unkeyed grid.</p>
+
+<table class="r_box" style="margin: 8px 8px 8px 0px;font-family: monospace" cellspacing="0" cellpadding="0" border="0" align="left"><tbody><tr><td class="r_box"><tt>A B C D E<br>
+F G H I K<br>
+L M N O P<br>
+Q R S T U<br>
+V W X Y Z</tt>
+</td></tr></tbody></table>
+<p>To encode a message, you would write your message, "ABCD", then you would
+figure out the row and column for each letter and write them below the
+letters, like the example shows.  Then you read the numbers off; all of the
+rows first and then all of the columns.  Using this string of numbers, you
+then look up the letters on the table again and get the encoded message.</p>
+
+<table class="r_box" style="margin-top: 8px; margin-bottom: 8px;font-family: monospace" cellspacing="0" cellpadding="0" border="0" align="center"><tbody><tr><td class="r_box"><tt>letter: A B C D<br>
+&nbsp;&nbsp;&nbsp;row: 1 1 1 1<br>
+column: 1 2 3 4<br>
+<br>
+The numbers: 1 1 1 1 1 2 3 4<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Encoded: &nbsp;A&nbsp; &nbsp;A&nbsp; &nbsp;B&nbsp;
+&nbsp;O<br>
+</tt></td></tr></tbody></table>
+<p>All non-letters are ignored and not encoded.  The one skipped letter will
+be automatically translated if you type it in the box.  Numbers, spaces, and
+punctuation will remain in place and will not be encoded.</p>
+
+
+<form name="encoder" method="post" action="#" onsubmit="return false;">
+<p><select name="encdec" _oldvalue="1">
+   <option value="1">Encrypt
+   </option><option value="-1">Decrypt
+</option></select>
+</p><p>Translate the letter <select name="skip" _oldvalue="J">
+   <option value="A">A
+   </option><option value="B">B
+   </option><option value="C">C
+   </option><option value="D">D
+   </option><option value="E">E
+   </option><option value="F">F
+   </option><option value="G">G
+   </option><option value="H">H
+   </option><option value="I">I
+   </option><option value="J" selected="">J
+   </option><option value="K">K
+   </option><option value="L">L
+   </option><option value="M">M
+   </option><option value="N">N
+   </option><option value="O">O
+   </option><option value="P">P
+   </option><option value="Q">Q
+   </option><option value="R">R
+   </option><option value="S">S
+   </option><option value="T">T
+   </option><option value="U">U
+   </option><option value="V">V
+   </option><option value="W">W
+   </option><option value="X">X
+   </option><option value="Y">Y
+   </option><option value="Z">Z
+</option></select> into <select name="skipto" _oldvalue="I">
+   <option value="A">A
+   </option><option value="B">B
+   </option><option value="C">C
+   </option><option value="D">D
+   </option><option value="E">E
+   </option><option value="F">F
+   </option><option value="G">G
+   </option><option value="H">H
+   </option><option value="I" selected="">I
+   </option><option value="J">J
+   </option><option value="K">K
+   </option><option value="L">L
+   </option><option value="M">M
+   </option><option value="N">N
+   </option><option value="O">O
+   </option><option value="P">P
+   </option><option value="Q">Q
+   </option><option value="R">R
+   </option><option value="S">S
+   </option><option value="T">T
+   </option><option value="U">U
+   </option><option value="V">V
+   </option><option value="W">W
+   </option><option value="X">X
+   </option><option value="Y">Y
+   </option><option value="Z">Z
+</option></select></p>
+<p>Alphabet Key:  <input type="text" name="key" value="" size="30" _oldvalue=""> -
+<span id="Keymaker0" target="document.encoder.key.value" _showkeymaker="show"><a href="#" onclick="return KeymakerToggle(0)">Show Keymaker</a></span></p>
+<table cellspacing="0" cellpadding="0" border="0">
+<tbody><tr><td valign="top">Tableau Used:</td><td>&nbsp;&nbsp;&nbsp;</td>
+<td><b><span id="alphabet"><tt>A B C D E<br>
+F G H I K<br>
+L M N O P<br>
+Q R S T U<br>
+V W X Y Z</tt></span></b></td></tr>
+</tbody></table>
+<p>Your message:<br><textarea name="text" rows="2" cols="40" _oldvalue=""></textarea><br>
+<a href="#" onclick="only_letters(); return false;">Only Letters</a> - Removes
+all non-letters from the text.</p>
+<p>This is your encoded or decoded text:</p>
+</form>
+<table class="r_box" style="margin-top: 8px; margin-bottom: 8px;font-family: monospace" cellspacing="0" cellpadding="0" border="0" align="center"><tbody><tr><td class="r_box"><p><b><tt><span id="output">Type in your message and see the results here!</span></tt></b></p>
+</td></tr></tbody></table><div style="clear: both"></div>
+</div>
+
+<img src="logo.jpg" style="float: right; margin-left: 2px; margin-bottom: 2px; height:100px">
+</td></tr></tbody></table>
+</td></tr>
+</tbody></table>
+
+
+</body></html>
